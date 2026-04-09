@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Ryan Davidson — Media & Growth Architect. Twenty years building the systems that connect media investment to real business outcomes.">
+  <title>Ryan Davidson — Media & Growth Architect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:            #060605;
+      --surface:       #0e0e0c;
+      --surface2:      #141413;
+      --text-primary:  #ede9e1;
+      --text-secondary:#7a7972;
+      --text-tertiary: #4a4945;
+      --accent:        #c4975a;
+      --accent-alpha:  rgba(196,151,90,0.12);
+      --border:        rgba(237,233,225,0.07);
+      --border-hover:  rgba(237,233,225,0.14);
+      --font-display:  'Cormorant Garamond', Georgia, serif;
+      --font-body:     'DM Sans', sans-serif;
+      --font-mono:     'IBM Plex Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 3rem;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.4s, background 0.4s, backdrop-filter 0.4s;
+    }
+    nav.scrolled {
+      border-color: var(--border);
+      background: rgba(6,6,5,0.88);
+      backdrop-filter: blur(14px);
+    }
+    .nav-logo {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      letter-spacing: 0.04em;
+    }
+    .nav-logo em { color: var(--accent); font-style: normal; }
+    .nav-links { display: flex; align-items: center; gap: 2.5rem; }
+    .nav-link {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-link:hover { color: var(--text-primary); }
+    .nav-cta {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      text-decoration: none;
+      border: 1px solid rgba(196,151,90,0.3);
+      padding: 8px 20px;
+      border-radius: 1px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .nav-cta:hover { background: var(--accent-alpha); border-color: rgba(196,151,90,0.65); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 10rem 3rem 6rem;
+      overflow: hidden;
+    }
+    #hero-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+    }
+    .hero-inner { position: relative; z-index: 1; max-width: 920px; }
+    .hero-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards 0.2s;
+    }
+    .hero-h1 {
+      font-family: var(--font-display);
+      font-size: clamp(44px, 6.5vw, 88px);
+      font-weight: 300;
+      line-height: 1.08;
+      color: var(--text-primary);
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 0.4s;
+    }
+    .hero-h2 {
+      font-family: var(--font-display);
+      font-size: clamp(44px, 6.5vw, 88px);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.08;
+      color: var(--text-secondary);
+      margin-bottom: 2.75rem;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 0.58s;
+    }
+    .hero-sub {
+      font-size: 17px;
+      color: var(--text-secondary);
+      line-height: 1.85;
+      max-width: 540px;
+      font-weight: 300;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 0.72s;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 0.88s;
+    }
+    .btn-fill {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--accent);
+      text-decoration: none;
+      padding: 14px 28px;
+      border-radius: 1px;
+      transition: opacity 0.2s, transform 0.18s;
+      display: inline-block;
+    }
+    .btn-fill:hover { opacity: 0.82; transform: translateY(-2px); }
+    .btn-line {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .btn-line:hover { color: var(--text-primary); }
+    .btn-line::after { content: ' →'; }
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 3rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 1.3s;
+    }
+    .scroll-line { width: 40px; height: 1px; background: var(--text-tertiary); }
+    .scroll-lbl {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+    }
+
+    /* ── TICKER ── */
+    .ticker-wrap {
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      padding: 1.1rem 0;
+    }
+    .ticker {
+      display: flex;
+      gap: 0;
+      animation: scrollLeft 40s linear infinite;
+      width: max-content;
+    }
+    .ticker-item {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      white-space: nowrap;
+      padding: 0 2rem;
+    }
+    .ticker-dot {
+      color: var(--accent);
+      opacity: 0.6;
+    }
+    @keyframes scrollLeft {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── SHARED SECTION LAYOUT ── */
+    .section { padding: 7rem 3rem; }
+    .section-inner { max-width: 980px; margin: 0 auto; }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 3.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .section-label::after {
+      content: '';
+      display: block;
+      width: 36px;
+      height: 1px;
+      background: var(--accent);
+      opacity: 0.35;
+    }
+
+    /* ── APPROACH ── */
+    .approach-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .approach-h2 {
+      font-family: var(--font-display);
+      font-size: clamp(30px, 3.2vw, 46px);
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--text-primary);
+    }
+    .approach-body { color: var(--text-secondary); font-size: 16px; line-height: 1.95; }
+    .approach-body p + p { margin-top: 1.25rem; }
+    .approach-body strong { color: var(--text-primary); font-weight: 400; }
+
+    /* ── GROWTHOS ── */
+    .growthos-section {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .growthos-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .growthos-wordmark {
+      font-family: var(--font-display);
+      font-size: clamp(56px, 8vw, 108px);
+      font-weight: 300;
+      color: var(--text-primary);
+      line-height: 0.88;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.75rem;
+    }
+    .growthos-desc {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.85;
+      margin-bottom: 2rem;
+    }
+    .growthos-cta {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: gap 0.2s;
+    }
+    .growthos-cta:hover { gap: 18px; }
+    .cap-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .cap-cell {
+      background: var(--surface2);
+      padding: 1.25rem 1.5rem;
+      transition: background 0.2s;
+    }
+    .cap-cell:hover { background: rgba(196,151,90,0.05); }
+    .cap-name {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .cap-desc { font-size: 12px; color: var(--text-tertiary); line-height: 1.55; }
+
+    /* ── CAREER ── */
+    .career-lead {
+      font-family: var(--font-display);
+      font-size: clamp(26px, 3vw, 42px);
+      font-weight: 300;
+      line-height: 1.25;
+      color: var(--text-primary);
+      max-width: 620px;
+      margin-bottom: 4rem;
+    }
+    .career-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .career-cell {
+      background: var(--bg);
+      padding: 2rem;
+      position: relative;
+      transition: background 0.2s;
+    }
+    .career-cell:hover { background: var(--surface); }
+    .career-tag {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      border: 1px solid var(--border);
+      padding: 3px 8px;
+      border-radius: 1px;
+      position: absolute;
+      top: 1.75rem;
+      right: 1.75rem;
+    }
+    .career-co {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 400;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      margin-top: 0.25rem;
+    }
+    .career-role { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+    .career-clients {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.07em;
+      color: var(--text-tertiary);
+      margin-top: 0.75rem;
+    }
+
+    /* ── ICP ── */
+    .icp-section {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+    }
+    .icp-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      margin-top: 1.5rem;
+    }
+    .icp-card {
+      background: var(--bg);
+      padding: 2.75rem;
+      transition: background 0.2s;
+    }
+    .icp-card:hover { background: var(--surface2); }
+    .icp-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      opacity: 0.6;
+    }
+    .icp-title {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 300;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+    .icp-body { font-size: 14px; color: var(--text-secondary); line-height: 1.85; }
+
+    /* ── CTA ── */
+    .cta-section {
+      text-align: center;
+      padding: 9rem 3rem;
+    }
+    .cta-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 2.5rem;
+    }
+    .cta-h2 {
+      font-family: var(--font-display);
+      font-size: clamp(44px, 5.5vw, 78px);
+      font-weight: 300;
+      line-height: 1.12;
+      color: var(--text-primary);
+      margin-bottom: 1.75rem;
+    }
+    .cta-h2 em { font-style: italic; color: var(--text-secondary); }
+    .cta-body {
+      font-size: 16px;
+      color: var(--text-secondary);
+      max-width: 460px;
+      margin: 0 auto 3.5rem;
+      line-height: 1.85;
+    }
+    .cta-email {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: clamp(22px, 3.2vw, 36px);
+      font-weight: 300;
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(196,151,90,0.25);
+      padding-bottom: 5px;
+      transition: border-color 0.2s;
+      margin-bottom: 2rem;
+    }
+    .cta-email:hover { border-color: var(--accent); }
+    .cta-or {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin: 0.25rem 0 1.25rem;
+    }
+    .cta-li {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .cta-li:hover { color: var(--text-primary); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 1.75rem 3rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-l, .footer-r {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay { transition-delay: 0.15s; }
+    .reveal-delay-2 { transition-delay: 0.28s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 820px) {
+      nav { padding: 1.25rem 1.5rem; }
+      .nav-links .nav-link { display: none; }
+      .section { padding: 5rem 1.5rem; }
+      .hero { padding: 8rem 1.5rem 5rem; }
+      .approach-grid,
+      .growthos-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .career-grid { grid-template-columns: 1fr 1fr; }
+      .icp-grid { grid-template-columns: 1fr; }
+      .cta-section { padding: 7rem 1.5rem; }
+      footer { padding: 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+    @media (max-width: 520px) {
+      .career-grid { grid-template-columns: 1fr; }
+      .cap-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav id="nav">
+  <div class="nav-logo">RD<em>.</em></div>
+  <div class="nav-links">
+    <a href="#approach" class="nav-link">Approach</a>
+    <a href="#growthos" class="nav-link">GrowthOS</a>
+    <a href="#background" class="nav-link">Background</a>
+    <a href="#contact" class="nav-cta">Get in touch</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-inner">
+    <p class="hero-label">Media &amp; Growth Architect &mdash; New York</p>
+    <h1 class="hero-h1">Most brands don't have a media problem.</h1>
+    <h2 class="hero-h2">They have a context problem.</h2>
+    <p class="hero-sub">The plan looks professionally assembled. It's usually aimed at the wrong thing &mdash; because no one connected the media team to the sales data, the product pipeline, or the pricing reality before a dollar was spent.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-fill">Get in touch</a>
+      <a href="#growthos" class="btn-line">See GrowthOS</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span class="scroll-lbl">Scroll to explore</span>
+  </div>
+</div>
+
+<!-- ── TICKER ── -->
+<div class="ticker-wrap">
+  <div class="ticker" id="ticker">
+    <span class="ticker-item">Audience Planning <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Reach &amp; Frequency Modeling <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Media Mix Modeling <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Multi-Touch Attribution <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Retail Media <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Connected TV <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Paid Social <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Geographic Intelligence <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">3P Measurement <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Forecasting &amp; Scenario Modeling <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Budget Optimization <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Channel Strategy <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Audience Planning <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Reach &amp; Frequency Modeling <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Media Mix Modeling <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Multi-Touch Attribution <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Retail Media <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Connected TV <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Paid Social <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Geographic Intelligence <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">3P Measurement <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Forecasting &amp; Scenario Modeling <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Budget Optimization <span class="ticker-dot">·</span></span>
+    <span class="ticker-item">Channel Strategy <span class="ticker-dot">·</span></span>
+  </div>
+</div>
+
+<!-- ── APPROACH ── -->
+<section class="section" id="approach">
+  <div class="section-inner">
+    <div class="section-label">The approach</div>
+    <div class="approach-grid reveal">
+      <div>
+        <h2 class="approach-h2">Work across the whole business before touching a channel.</h2>
+      </div>
+      <div class="approach-body">
+        <p>Sales, product, creative, finance &mdash; all of it feeds the plan before a single dollar is allocated. The result is a media system that's <strong>defensible to the CFO, not just the CMO.</strong></p>
+        <p>Twenty years across agencies, brands, and ad-tech taught me one thing clearly: most plans fail not because of bad media decisions, but because the inputs were wrong from the start. Wrong objectives. Wrong signals. Wrong assumptions about what the business actually needs.</p>
+        <p>What I build isn't a deck, a recommendation, or a handoff. It's <strong>infrastructure your team understands and owns after I'm gone.</strong> GrowthOS is what makes that possible.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── GROWTHOS ── -->
+<section class="section growthos-section" id="growthos">
+  <div class="section-inner">
+    <div class="section-label">The platform</div>
+    <div class="growthos-grid reveal">
+      <div>
+        <div class="growthos-wordmark">Growth<br>OS</div>
+        <p class="growthos-desc">A unified intelligence system connecting media investment, audience dynamics, and business outcomes across every channel &mdash; built to replace the disconnected dashboards and siloed spreadsheets most brands are still running on.</p>
+        <a href="#contact" class="growthos-cta">Request a walkthrough &rarr;</a>
+      </div>
+      <div class="cap-grid reveal reveal-delay">
+        <div class="cap-cell">
+          <div class="cap-name">Audience Planning</div>
+          <div class="cap-desc">Reach, frequency, and audience dynamics across all paid and owned channels</div>
+        </div>
+        <div class="cap-cell">
+          <div class="cap-name">Media Mix Modeling</div>
+          <div class="cap-desc">Bayesian MMM with probabilistic confidence intervals and seasonality</div>
+        </div>
+        <div class="cap-cell">
+          <div class="cap-name">Multi-Touch Attribution</div>
+          <div class="cap-desc">Deterministic and probabilistic methods mapped to tactic type</div>
+        </div>
+        <div class="cap-cell">
+          <div class="cap-name">Retail Media</div>
+          <div class="cap-desc">Pure play and omnichannel retail integrated and measured in one system</div>
+        </div>
+        <div class="cap-cell">
+          <div class="cap-name">Geographic Intelligence</div>
+          <div class="cap-desc">BDI/CDI, store-level lift, awareness-to-conversion by market</div>
+        </div>
+        <div class="cap-cell">
+          <div class="cap-name">52-Week Forecasting</div>
+          <div class="cap-desc">Scenario modeling, spend curves, and outcome ranges with confidence bands</div>
+        </div>
+        <div class="cap-cell">
+          <div class="cap-name">3P Measurement</div>
+          <div class="cap-desc">Numerator, Upwave, Measured, Rockerbox, IRI, and more — all in one view</div>
+        </div>
+        <div class="cap-cell">
+          <div class="cap-name">Budget Optimization</div>
+          <div class="cap-desc">Spend allocation tied to business conditions, not convention or habit</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── BACKGROUND ── -->
+<section class="section" id="background">
+  <div class="section-inner">
+    <div class="section-label">Twenty years across every seat</div>
+    <p class="career-lead reveal">Agency. Brand. Ad-tech. Not as a generalist &mdash; as someone who needed to understand each world to build something that finally connects all of them.</p>
+    <div class="career-grid reveal reveal-delay">
+      <div class="career-cell">
+        <span class="career-tag">Holding Co.</span>
+        <div class="career-co">Zenith</div>
+        <div class="career-role">Media planning &amp; investment at scale</div>
+        <div class="career-clients">Verizon &middot; JPMorgan Chase</div>
+      </div>
+      <div class="career-cell">
+        <span class="career-tag">Holding Co.</span>
+        <div class="career-co">Carat</div>
+        <div class="career-role">National media strategy &amp; planning</div>
+        <div class="career-clients">General Motors</div>
+      </div>
+      <div class="career-cell">
+        <span class="career-tag">Independent</span>
+        <div class="career-co">Barkley</div>
+        <div class="career-role">Full-service integrated media</div>
+        <div class="career-clients">Motel 6 &middot; Delta Faucet</div>
+      </div>
+      <div class="career-cell">
+        <span class="career-tag">Brand Side</span>
+        <div class="career-co">ekaterra</div>
+        <div class="career-role">In-house media &amp; marketing leadership</div>
+        <div class="career-clients">Lipton &middot; Global brand P&amp;L</div>
+      </div>
+      <div class="career-cell">
+        <span class="career-tag">Ad-Tech</span>
+        <div class="career-co">Tatari</div>
+        <div class="career-role">TV attribution &amp; streaming measurement</div>
+        <div class="career-clients">Deterministic + probabilistic modeling</div>
+      </div>
+      <div class="career-cell">
+        <span class="career-tag">Independent</span>
+        <div class="career-co">Now</div>
+        <div class="career-role">Select engagements — retainer &amp; project</div>
+        <div class="career-clients">Currently accepting new work</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHO I WORK WITH ── -->
+<section class="section icp-section">
+  <div class="section-inner">
+    <div class="section-label">Who I work with</div>
+    <div class="icp-grid reveal">
+      <div class="icp-card">
+        <div class="icp-num">01</div>
+        <h3 class="icp-title">Mid-market brands with real complexity</h3>
+        <p class="icp-body">Meaningful budgets. Omnichannel presence. Data that isn't talking to itself. Big enough to have real problems &mdash; smart enough to know a bloated holdco relationship isn't the answer.</p>
+      </div>
+      <div class="icp-card">
+        <div class="icp-num">02</div>
+        <h3 class="icp-title">Independent agencies that need a senior embedded resource</h3>
+        <p class="icp-body">You have strategy and creative covered. You need someone who builds the media architecture from the brief forward &mdash; alongside your team, not instead of it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section class="cta-section" id="contact">
+  <p class="cta-eyebrow">Let's work together</p>
+  <h2 class="cta-h2">Is the problem<br><em>interesting enough?</em></h2>
+  <p class="cta-body">I'm selective about engagements &mdash; which means the ones I take get my full attention. If the fit seems right, start here.</p>
+  <a href="mailto:rdavidson21@gmail.com" class="cta-email">rdavidson21@gmail.com</a>
+  <p class="cta-or">or</p>
+  <a href="https://linkedin.com/in/ryandavidson21" class="cta-li" target="_blank">linkedin.com/in/ryandavidson21 ↗</a>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <span class="footer-l">Ryan Davidson &middot; New York &middot; &copy; 2026</span>
+  <span class="footer-r">Media &amp; Growth Architect</span>
+</footer>
+
+<script>
+  /* ── Canvas network ── */
+  (function() {
+    const canvas = document.getElementById('hero-canvas');
+    const ctx = canvas.getContext('2d');
+    let nodes = [];
+
+    function resize() {
+      canvas.width  = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    }
+
+    function init() {
+      nodes = [];
+      const count = Math.max(18, Math.floor((canvas.width * canvas.height) / 20000));
+      for (let i = 0; i < count; i++) {
+        nodes.push({
+          x:  Math.random() * canvas.width,
+          y:  Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.32,
+          vy: (Math.random() - 0.5) * 0.32,
+          r:  Math.random() * 1.4 + 0.6
+        });
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const maxD = 155;
+
+      nodes.forEach((n, i) => {
+        n.x += n.vx;
+        n.y += n.vy;
+        if (n.x < 0 || n.x > canvas.width)  n.vx *= -1;
+        if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
+
+        for (let j = i + 1; j < nodes.length; j++) {
+          const m = nodes[j];
+          const dx = n.x - m.x, dy = n.y - m.y;
+          const d  = Math.sqrt(dx*dx + dy*dy);
+          if (d < maxD) {
+            ctx.beginPath();
+            ctx.moveTo(n.x, n.y);
+            ctx.lineTo(m.x, m.y);
+            ctx.strokeStyle = `rgba(196,151,90,${(1 - d/maxD) * 0.16})`;
+            ctx.lineWidth = 0.6;
+            ctx.stroke();
+          }
+        }
+
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(196,151,90,0.5)';
+        ctx.fill();
+      });
+
+      requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', () => { resize(); init(); });
+    resize(); init(); draw();
+  })();
+
+  /* ── Scroll nav ── */
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  }, { passive: true });
+
+  /* ── Reveal on scroll ── */
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
